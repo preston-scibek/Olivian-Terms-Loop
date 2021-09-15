@@ -43,7 +43,7 @@ async function terminologyCallback(incomingText){
     let filtered = $(myDiv).children().filter((i, el) => {
         const text = $(el).text();
         const temp = text.split(":");
-        return incomingText.toLowerCase().includes(temp[0].toLowerCase())
+        return temp[0].toLowerCase().includes(incomingText.toLowerCase());
     })
 
     filtered.each(function (i, e) {
