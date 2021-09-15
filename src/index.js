@@ -27,6 +27,7 @@ const readFromUrl = async (url) => {
 
 async function terminologyCallback(incomingText){
     const url = 'https://sllane.com/olivology';
+    const webpageSeachStr = "Alphabetical Listing of Terms";
     const html = await readFromUrl(url);
     const $ = cheerio.load(html);
     let type;
@@ -38,11 +39,14 @@ async function terminologyCallback(incomingText){
     }
     let answer = `I could not find the meaning of this ${type}`;
     
-    let myDiv = $('div:contains("Alphabetical Listing of Terms")').last()
+    let myDiv = $(`div:contains("${webpageSeachStr}")`).last()
     let res = [];
     let filtered = $(myDiv).children().filter((i, el) => {
         const text = $(el).text();
         const temp = text.split(":");
+        if (temp[0] === webpageSeachStr){
+          return false;
+        }
         return temp[0].toLowerCase().includes(incomingText.toLowerCase());
     })
 
@@ -50,8 +54,8 @@ async function terminologyCallback(incomingText){
         let str = $(e).text();
         res[i] = str;
     });
-    answer = res.join(",")
-    writeWhisper(`The meaning of ${incomingText}`, `${res}`);
+    answer = res.join("     \n");
+    writeWhisper(`The meaning of ${incomingText}`, `${answer}`);
 }
 
 async function terminology(){
