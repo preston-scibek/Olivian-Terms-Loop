@@ -24,5 +24,5 @@ npm run lint          # Check for issues
 npm run lint:fix      # Fix all auto-fixable issues
 
 # Watch
-npm run watch          # Watch for changes and reubild the loop as needed
+npm run watch          # Watch for changes and rebuild the loop as needed
 ```
