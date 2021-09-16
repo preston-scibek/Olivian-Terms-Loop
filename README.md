@@ -1,6 +1,6 @@
 # Olive Helps: Olive-Terms-Loop
 
-Olivology - A loop that allows you to look up any and every Olive vocabulary word. Sources could include https://www.sllane.com/olivology
+Olivology - A loop that allows you to look up any and every Olive vocabulary word. Sources include https://www.sllane.com/olivology
 
 ## Requirements
 
