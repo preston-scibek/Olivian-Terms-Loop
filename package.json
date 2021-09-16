@@ -79,6 +79,13 @@
           }
         ]
       },
+      "filesystem": {
+        "pathGlobs": [
+          {
+            "value": "/tmp/backup.txt"
+          }
+        ]
+      },
       "whisper": {},
       "ui": {}
     }

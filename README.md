@@ -16,6 +16,11 @@ Then compile and package the project with:
 npm run build
 ```
 
+Then copy the backup file to the appropriate directory
+```shell
+cp backup.txt /tmp/backup.txt
+```
+
 ## Other Commands
 
 ```shell

@@ -1,4 +1,4 @@
-const {ui, network, whisper} = require('@oliveai/ldk');
+const {ui, network, whisper, filesystem} = require('@oliveai/ldk');
 const cheerio = require('cheerio');
 const { last } = require('cheerio/lib/api/traversing');
 
@@ -41,18 +41,39 @@ async function terminologyCallback(incomingText){
     
     let myDiv = $(`div:contains("${webpageSeachStr}")`).last()
     let res = [];
+    let addedTracker = [];
+
+    // todo , see if we can put this data somewhere else (ideally online to be able to dynamically update)
+    //  (or update sllane.com/olivology 
+    // in which case this backup block is redudnant)
+    let backupFile = '/tmp/backup.txt';
+    
+    if (filesystem.exists(backupFile)) {
+      let backupList = await filesystem.readFile(backupFile);
+      const decodedList = await network.decode(backupList);
+      decodedList.split('\n').forEach((row) => {
+        if (row) {
+          const temp = row.split(":");
+          if (temp[0].toLowerCase().includes(incomingText.toLowerCase())){
+            res.push(row)
+            addedTracker.push(temp[0].toLowerCase());
+          }
+        }
+      });
+    }
+
     let filtered = $(myDiv).children().filter((i, el) => {
         const text = $(el).text();
         const temp = text.split(":");
         if (temp[0] === webpageSeachStr){
           return false;
         }
-        return temp[0].toLowerCase().includes(incomingText.toLowerCase());
-    })
+        return temp[0].toLowerCase().includes(incomingText.toLowerCase()) && !addedTracker.includes(temp[0].toLowerCase());
+    });
 
     filtered.each(function (i, e) {
         let str = $(e).text();
-        res[i] = str;
+        res.push(str);
     });
     answer = res.join("     \n");
     writeWhisper(`The meaning of ${incomingText}`, `${answer}`);
