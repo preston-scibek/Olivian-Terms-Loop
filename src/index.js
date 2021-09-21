@@ -82,6 +82,7 @@ async function terminologyCallback(incomingText){
 async function terminology(){
   writeWhisper("Olive Terminology Started", "Search an olivian word to retrieve the definition")
   ui.listenSearchbar(terminologyCallback);
+  ui.listenGlobalSearch(terminologyCallback);
 }
 
 terminology();
