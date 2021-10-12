@@ -47,18 +47,22 @@ async function terminologyCallback(incomingText) {
   // in which case this backup block is redudnant)
   const backupFile = '/tmp/backup.txt';
 
-  if (filesystem.exists(backupFile)) {
-    const backupList = await filesystem.readFile(backupFile);
-    const decodedList = await network.decode(backupList);
-    decodedList.split('\n').forEach((row) => {
-      if (row) {
-        const temp = row.split(':');
-        if (temp[0].toLowerCase().includes(incomingText.toLowerCase())) {
-          res.push(row);
-          addedTracker.push(temp[0].toLowerCase());
+  try {
+    if (filesystem.exists(backupFile)) {
+      const backupList = await filesystem.readFile(backupFile);
+      const decodedList = await network.decode(backupList);
+      decodedList.split('\n').forEach((row) => {
+        if (row) {
+          const temp = row.split(':');
+          if (temp[0].toLowerCase().includes(incomingText.toLowerCase())) {
+            res.push(row);
+            addedTracker.push(temp[0].toLowerCase());
+          }
         }
-      }
-    });
+      });
+    }
+  } catch (error) {
+    console.log('no backup file');
   }
 
   const filtered = $(myDiv)
@@ -84,7 +88,9 @@ async function terminologyCallback(incomingText) {
 }
 
 async function terminology() {
-  writeWhisper('Olive Terminology Started', 'Search an olivian word to retrieve the definition');
+  console.log(`where am i`);
+  console.log(`bye bye`);
+  writeWhisper(`Olive Terminology Started`, 'Search an olivian word to retrieve the definition');
   ui.listenSearchbar(terminologyCallback);
   ui.listenGlobalSearch(terminologyCallback);
 }
